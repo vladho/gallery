@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Menu, MenuItem, Button, IconButton, Box, I
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchIcon from '@mui/icons-material/Search';
 
-interface HeaderProps {
+type HeaderProps = {
   title: string;
 }
 

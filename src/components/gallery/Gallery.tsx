@@ -1,6 +1,9 @@
 // MainGallery.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Grid, Card, CardMedia, CardContent, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { addImage } from '@/redux/gallery/galleryReducer';
+import {getImages} from "../../services/api.js";
 
 // Інтерфейс для об'єкта зображення
 interface ImageItem {
@@ -18,6 +21,17 @@ const images: ImageItem[] = [
 ];
 
 const Gallery: React.FC = () => {
+    const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     useDispatch(addImage(images));
+    //   }, [dispatch]);
+
+    useEffect(() => {
+        console.log("first")
+        const images = getImages()
+      }, []);
+
   return (
     <Container sx={{ py: 4 }}>
       <Grid container spacing={4}>

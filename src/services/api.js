@@ -1,21 +1,9 @@
-import OrderBy from "@/components/header/OrderBy";
 import axios from "axios";
 
-// const Authorization = process.env.REACT_APP_API_KEY;
-const token ="Client-ID j_knc_osII1b4Vten-5gcRoQrwAYBXbrkLaadAh9fzY"
 const Authorization = "j_knc_osII1b4Vten-5gcRoQrwAYBXbrkLaadAh9fzY"
-
-// const setToken = token =>
-//     (axios.defaults.headers.common.Authorization = `Authorization ${token}`);
-
 const baseUrl = "https://api.unsplash.com/photos/";
-// const baseAuthorization = {
-//     headers: {
-//     Authorization: `Client-ID ${Authorization}`
-//   }, params: {
-//     per_page: 8,
-//     order_by: 'popular',
-//   }}
+const topicsUrl = 'https://api.unsplash.com/topics';
+
 
 
 export const getImages = async ({orderBy}) => {
@@ -28,13 +16,7 @@ export const getImages = async ({orderBy}) => {
   }}
   
     try {
-      const response = await axios.get(baseUrl,
-        baseAuthorization
-        // , {params: {
-        //   per_page: 8,
-        //   order_by: 'popular',
-        // }}
-      );
+      const response = await axios.get(baseUrl,baseAuthorization);
     console.log(response.data)
 
       return response.data;
@@ -44,3 +26,19 @@ export const getImages = async ({orderBy}) => {
       throw error;
     }
   };
+
+export const getTopics = async () => {
+
+  try {
+    const response = await axios.get(topicsUrl, {
+      headers: {
+        Authorization: `Client-ID ${Authorization}`,
+      },
+    });
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Помилка", error);
+    throw error;
+  }
+};

@@ -1,7 +1,7 @@
 // Gallery.tsx
 import React, { useEffect, useState } from 'react';
 import { Container, Grid } from '@mui/material';
-import { getImages } from '../../services/api';
+import { getTopics, getImages } from '../../services/api';
 import ImageCard from './ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { addImage } from '@/redux/gallery/galleryReducer';
@@ -24,6 +24,7 @@ const Gallery: React.FC<GalleryType> = ({orderBy}) => {
   useEffect(() => {
     const fetchImages = async () => {
       const fetchedImages = await getImages({orderBy});
+      const test = await getTopics();
       dispatch(addImage(fetchedImages))
     };
 

@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, Tab } from '@mui/material';
+import { getTopics } from '@/services/api';
 
 const CategoryTabs: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
+  const [category, setCategory] = useState([]);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      const allCategory = await getTopics();
+      setCategory(allCategory);
+
+    };
+
+    fetchCategory();
+  }, []);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -10,9 +22,8 @@ const CategoryTabs: React.FC = () => {
 
   return (
     <Tabs value={tabValue} onChange={handleTabChange} sx={{ flexGrow: 1 }} centered>
-      <Tab label="Категорія 1" />
-      <Tab label="Категорія 2" />
-      <Tab label="Категорія 3" />
+      {category.map(el=><Tab label={el.slug} />)}
+
     </Tabs>
   );
 };

@@ -4,7 +4,7 @@ import React from 'react';
 const gallery = () => {
     return (
         <>
-            <Gallery/>
+            <Gallery orderBy="wievs"/>
         </>
     );
 };

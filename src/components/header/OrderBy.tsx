@@ -1,12 +1,13 @@
-// OrderBy.tsx
 import React, { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useRouter } from 'next/router';
 
 const OrderBy: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedOrder, setSelectedOrder] = useState<string>('popular');
   const open = Boolean(anchorEl);
+  const router = useRouter();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -16,9 +17,10 @@ const OrderBy: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const handleOrderSelect = (order: string) => {
+  const handleOrderSelect = (order: string, href: string) => {
     setSelectedOrder(order);
     handleClose();
+    router.push(href); 
   };
 
   return (
@@ -36,12 +38,21 @@ const OrderBy: React.FC = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => handleOrderSelect('popular')}>popular</MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('oldest')}>oldest</MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('views')}>
-        За кількістю переглядів</MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('latest')}>views</MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('downloads')}>downloads</MenuItem>
+        <MenuItem onClick={() => handleOrderSelect('popular', '/popular')}>
+          popular
+        </MenuItem>
+        <MenuItem onClick={() => handleOrderSelect('oldest', '/oldest')}>
+          oldest
+        </MenuItem>
+        <MenuItem onClick={() => handleOrderSelect('views', '/views')}>
+          За кількістю переглядів
+        </MenuItem>
+        <MenuItem onClick={() => handleOrderSelect('latest', '/latest')}>
+          latest
+        </MenuItem>
+        <MenuItem onClick={() => handleOrderSelect('downloads', '/downloads')}>
+          downloads
+        </MenuItem>
       </Menu>
     </>
   );

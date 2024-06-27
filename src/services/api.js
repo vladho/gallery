@@ -8,6 +8,10 @@ const Authorization = "j_knc_osII1b4Vten-5gcRoQrwAYBXbrkLaadAh9fzY"
 //     (axios.defaults.headers.common.Authorization = `Authorization ${token}`);
 
 const baseUrl = "https://api.unsplash.com/photos/";
+const baseAuthorization = {
+    headers: {
+    Authorization: `Client-ID ${Authorization}`
+  }}
 
 
 export const getImages = async () => {
@@ -16,13 +20,9 @@ export const getImages = async () => {
     try {
 // console.log(Authorization)
 
-      const response = await axios.get('https://api.unsplash.com/photos/',
-        {headers: {
-            Authorization: `Client-ID ${Authorization}`
-          }
-    
-    });
-    console.log(response)
+      const response = await axios.get(baseUrl,
+        baseAuthorization);
+    console.log(response.data)
 
       return response.data;
     } catch (error) {

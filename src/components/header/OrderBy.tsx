@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Box, Button, Menu, MenuItem } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useRouter } from 'next/router';
 
@@ -23,8 +23,10 @@ const OrderBy: React.FC = () => {
     router.push(href); 
   };
 
+  const menuItemOptions = ["popular","oldest","views","latest","downloads"]
+
   return (
-    <>
+    <Box >
       <Button
         color="inherit"
         endIcon={<ArrowDropDownIcon />}
@@ -38,23 +40,14 @@ const OrderBy: React.FC = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => handleOrderSelect('popular', '/popular')}>
-          popular
-        </MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('oldest', '/oldest')}>
-          oldest
-        </MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('views', '/views')}>
-          За кількістю переглядів
-        </MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('latest', '/latest')}>
-          latest
-        </MenuItem>
-        <MenuItem onClick={() => handleOrderSelect('downloads', '/downloads')}>
-          downloads
-        </MenuItem>
+         {menuItemOptions.map((option) => (
+          <MenuItem key={option} onClick={() => handleOrderSelect(option, `/${option}`)}>
+            {option}
+          </MenuItem>
+        ))}
+        
       </Menu>
-    </>
+    </Box>
   );
 };
 

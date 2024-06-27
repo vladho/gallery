@@ -20,11 +20,12 @@ export const getImages = async () => {
     try {
 // console.log(Authorization)
 
-      const response = await axios.get(baseUrl,
-        baseAuthorization);
-    console.log(response.data)
+    //   const response = await axios.get(baseUrl,
+    //     baseAuthorization);
+    // console.log(response.data)
 
-      return response.data;
+    //   return response.data;
+    return
     } catch (error) {
       console.error("Помилка", error);
       throw error;

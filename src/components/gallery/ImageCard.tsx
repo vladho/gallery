@@ -9,20 +9,29 @@ interface ImageCardProps {
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
+  const getRandomWievs = () => {
+    return Math.floor(Math.random() * 2500);
+  }
+  const getRandomComments = () => {
+    return Math.floor(Math.random() * 100);
+  }
+
   return (<>
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardMedia
         component="img"
         sx={{ height: 200, objectFit: 'cover' }}
-        image={image.url}
-        alt={image.title}
+        image={image.urls.regular}
+        alt={image.alt_description
+        }
       />
       <CardContent sx={{ flexGrow: 1 }}>
-        <ImageStats views={image.views} comments={image.comments} likes={image.likes} />
+        <ImageStats views={getRandomWievs()} comments={getRandomComments()} likes={image.likes} />
       </CardContent>
     </Card>
         <Typography variant="h5" component="h2">
-          {image.title}
+          {image.alt_description
+          }
         </Typography>
         </>
   );

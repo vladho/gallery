@@ -21,6 +21,7 @@ export const filter = createSlice({
 });
 
 export const { addImage } = images.actions;
+export const { clearImages } = images.actions;
 export const { searchImages } = filter.actions;
 
 // export default images.reducer;

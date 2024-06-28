@@ -9,26 +9,31 @@ const searchUrl = 'https://api.unsplash.com/search/photos' ;
 
 
 
-export const getImages = async ({orderBy}) => {
-
+export const getImages = async ({ orderBy, page = 1 }) => {
   const baseAuthorization = {
     headers: {
-    Authorization: `Client-ID ${authorization}`
-  }, params: {
-    per_page: 9,
-    order_by: orderBy,
-  }}
-  
-    try {
-      const response = await axios.get(baseUrl,baseAuthorization);
-
-      return response.data;
-
-    } catch (error) {
-      console.error("Помилка", error);
-      throw error;
+      Authorization: `Client-ID ${authorization}`
+    },
+    params: {
+      page: page,
+      per_page: 9,
+      order_by: orderBy,
     }
   };
+  
+  try {
+    const response = await axios.get(baseUrl, baseAuthorization);
+    
+    return {
+      images: response.data,
+      hasMore: response.data.length === 9
+    };
+
+  } catch (error) {
+    console.error("Помилка", error);
+    throw error;
+  }
+};
 
 export const getTopics = async () => {
 

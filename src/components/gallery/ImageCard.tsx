@@ -13,7 +13,7 @@ const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
 
   return (
     <Box>
-      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%'}}>
         <CardMedia
           component="img"
           sx={{ height: 200, objectFit: 'cover' }}

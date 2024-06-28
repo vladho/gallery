@@ -15,20 +15,22 @@ const SearchBar: React.FC = () => {
  
   const dispatch = useDispatch();
   const [search, setSearch] = useState("")
-  // const search = useSelector((state: RootState) => state.gallery.filter);
+  
 
-
-  const handleSearch = () => {
-    console.log('Пошук за запитом:', search);
+  const handleSearch = async () => {
+        try {
+      const images = await getSearchPhotos(search);
+      dispatch(addImage(images));
+    } catch (error) {
+      console.error("Помилка при отриманні зображень:", error);
+    }
   };
 
-  const handleSearchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const images = await getSearchPhotos(event.currentTarget.value)
-    console.log(event.currentTarget.value);
-    setSearch(event.currentTarget.value)
-    console.log(images);
-    // dispatch(addImage(images));
-
+  const handleSearchChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.currentTarget.value;
+       
+    setSearch(searchValue);
+    
   };
 
   return (

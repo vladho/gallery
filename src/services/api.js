@@ -18,7 +18,6 @@ export const getImages = async ({orderBy}) => {
   
     try {
       const response = await axios.get(baseUrl,baseAuthorization);
-    console.log(response.data)
 
       return response.data;
 
@@ -71,8 +70,8 @@ export const getSearchPhotos =  async (value) => {
         query:value,
         }
     });
-    console.log(response.data)
-    return response.data;
+
+    return response.data.results;
   } catch (error) {
     console.error("Помилка", error);
     throw error;

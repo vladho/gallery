@@ -1,4 +1,3 @@
-// ImageStats.tsx
 import React from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -13,44 +12,26 @@ interface ImageStatsProps {
 
 const ImageStats: React.FC<ImageStatsProps> = ({ views, comments, likes }) => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <VisibilityIcon fontSize="small" sx={{ mr: 0.5 }} />
-          <Typography variant="body2" color="text.secondary">
-            {views}
-          </Typography>
-        </Box>
-        <Typography variant="caption" color="text.secondary">
-          переглядів
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton size="small" aria-label="comments">
-            <CommentIcon fontSize="small" />
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
+      {[
+        { icon: <VisibilityIcon fontSize="small" />, value: views, label: 'переглядів' },
+        { icon: <CommentIcon fontSize="small" />, value: comments, label: 'коментарів' },
+        { icon: <ThumbUpIcon fontSize="small" />, value: likes, label: 'лайків' },
+      ].map(({ icon, value, label }) => (
+        <Box key={label} sx={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton size="small" sx={{ p: 0.5 }}>
+            {icon}
           </IconButton>
-          <Typography variant="body2" color="text.secondary">
-            {comments}
-          </Typography>
+          <Box sx={{ ml: 0.5 }}>
+            <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1 }}>
+              {value}
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1 }}>
+              {label}
+            </Typography>
+          </Box>
         </Box>
-        <Typography variant="caption" color="text.secondary">
-          коментарів
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton size="small" aria-label="like">
-            <ThumbUpIcon fontSize="small" />
-          </IconButton>
-          <Typography variant="body2" color="text.secondary">
-            {likes}
-          </Typography>
-        </Box>
-        <Typography variant="caption" color="text.secondary">
-          лайків
-        </Typography>
-      </Box>
+      ))}
     </Box>
   );
 };

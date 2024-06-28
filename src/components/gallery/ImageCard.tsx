@@ -1,4 +1,3 @@
-// ImageCard.tsx
 import React from 'react';
 import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
 import { ImageItem } from './types';
@@ -9,31 +8,34 @@ interface ImageCardProps {
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
-  const getRandomWievs = () => {
-    return Math.floor(Math.random() * 2500);
-  }
-  const getRandomComments = () => {
-    return Math.floor(Math.random() * 100);
-  }
+  const getRandomViews = () => Math.floor(Math.random() * 2500);
+  const getRandomComments = () => Math.floor(Math.random() * 100);
 
-  return (<>
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <CardMedia
-        component="img"
-        sx={{ height: 200, objectFit: 'cover' }}
-        image={image.urls.regular}
-        alt={image.alt_description
-        }
-      />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <ImageStats views={getRandomWievs()} comments={getRandomComments()} likes={image.likes} />
-      </CardContent>
-    </Card>
-        <Typography variant="h5" component="h2">
-          {image.alt_description
-          }
-        </Typography>
-        </>
+  return (
+    <Box>
+      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <CardMedia
+          component="img"
+          sx={{ height: 200, objectFit: 'cover' }}
+          image={image.urls.regular}
+          alt={image.alt_description}
+        />
+        <CardContent sx={{ flexGrow: 1, p: 0 }}>
+          <ImageStats 
+            views={getRandomViews()} 
+            comments={getRandomComments()} 
+            likes={image.likes} 
+          />
+        </CardContent>
+      </Card>
+      <Typography 
+        sx={{ 
+          mt: '10px',
+        }}
+      >
+        {image.alt_description}
+      </Typography>
+    </Box>
   );
 };
 

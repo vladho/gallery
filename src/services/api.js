@@ -23,10 +23,13 @@ export const getImages = async ({ orderBy, page = 1 }) => {
   
   try {
     const response = await axios.get(baseUrl, baseAuthorization);
+    console.log(response);
+    
+    const totalPages = parseInt(response.headers['x-total']) || 1;
     
     return {
       images: response.data,
-      hasMore: response.data.length === 9
+      totalPages: Math.ceil(totalPages / 9)
     };
 
   } catch (error) {

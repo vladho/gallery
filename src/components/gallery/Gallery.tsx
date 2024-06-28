@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Button } from '@mui/material';
+import { Box, Container, Grid, Button, ButtonGroup } from '@mui/material';
 import { getImages } from '../../services/api';
 import ImageCard from './ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,8 +14,8 @@ type GalleryType = { orderBy: string };
 const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -25,23 +25,18 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
 
   useEffect(() => {
 
-    setPage(1);
-    setHasMore(true);
-    fetchImages();
+    setCurrentPage(1);
+    fetchImages(1);
   }, [dispatch, pathName, orderBy]);
 
-  const fetchImages = async () => {
+  const fetchImages = async (page: number) => {
     try {
       const fetchedData = await getImages({ orderBy, page });
-      if (fetchedData.images.length === 0) {
-        setHasMore(false);
-      } else {
-        dispatch(addImage(fetchedData.images));
-        setPage(prevPage => prevPage + 1);
-      }
+      dispatch(addImage(fetchedData.images));
+      setTotalPages(fetchedData.totalPages);
+      setCurrentPage(page);
     } catch (error) {
       console.error("Помилка завантаження зображень", error);
-      setHasMore(false);
     }
   };
 
@@ -51,6 +46,36 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
   };
 
   const handleClose = () => setOpen(false);
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      fetchImages(page);
+    }
+  };
+
+  const renderPaginationButtons = () => {
+    let buttons = [];
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+
+    if (endPage - startPage < 4) {
+      startPage = Math.max(1, endPage - 4);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <Button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          variant={i === currentPage ? "contained" : "outlined"}
+        >
+          {i}
+        </Button>
+      );
+    }
+
+    return buttons;
+  };
 
   return (
     <Container sx={{ py: 4 }}>
@@ -63,13 +88,23 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
           </Grid>
         ))}
       </Grid>
-      {hasMore && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Button onClick={fetchImages} variant="contained">
-            Завантажити ще
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <ButtonGroup>
+          <Button 
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Назад
           </Button>
-        </Box>
-      )}
+          {renderPaginationButtons()}
+          <Button 
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Вперед
+          </Button>
+        </ButtonGroup>
+      </Box>
       <ModalComponent open={open} handleClose={handleClose} photo={selectedPhoto} />
     </Container>
   );

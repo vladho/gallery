@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Box } from '@mui/material';
-import { getTopics } from '@/services/api';
+import { getTopics, getTopicsPhotos } from '@/services/api';
 import { useRouter } from 'next/router';
+import { addImage } from '@/redux/gallery/galleryReducer';
+import { useDispatch } from 'react-redux';
 
 
 type Category = {
@@ -12,8 +14,9 @@ const CategoryTabs: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [category, setCategory] = useState<Category[]>([]);
   const [path,setPath] = useState("");
+  const [href,setHref] = useState("")
 
-
+const dispatch = useDispatch();
 const router = useRouter();
 const pathName = router.pathname;
 const order = router.query.order;
@@ -23,6 +26,8 @@ const order = router.query.order;
     const fetchCategory = async () => {
       const allCategory = await getTopics();
       setCategory(allCategory);
+      const fetchedImages = getTopicsPhotos({path, href})
+      dispatch(addImage(fetchedImages))
     };
 
     fetchCategory();

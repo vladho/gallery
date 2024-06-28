@@ -1,12 +1,13 @@
 // Gallery.tsx
 import React, { useEffect, useState } from 'react';
 import { Container, Grid } from '@mui/material';
-import { getTopics, getImages } from '../../services/api';
+import { getTopics, getImages, getTopicsPhotos } from '../../services/api';
 import ImageCard from './ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { addImage } from '@/redux/gallery/galleryReducer';
 import {getImagesSelector} from "../../redux/gallery/gallerySelector"
 import { ImageItem } from './types';
+import   { useRouter } from 'next/router';
 
 
 type GalleryType = {orderBy: string};
@@ -15,21 +16,34 @@ type GalleryType = {orderBy: string};
 const Gallery: React.FC<GalleryType> = ({orderBy}) => {
 
   const [images, setImages] = useState<ImageItem[]>([]);
+
   const dispatch = useDispatch();
+const router = useRouter();
+const pathName = router.pathname;
+console.log(pathName);
+const slug = router.query.slug
 
   const getAllImages = useSelector(getImagesSelector);
-  console.log(getAllImages)
+  // console.log(getAllImages)
+  // console.log(router.query.slug);
 
 
   useEffect(() => {
     const fetchImages = async () => {
-      const fetchedImages = await getImages({orderBy});
-      const test = await getTopics();
-      dispatch(addImage(fetchedImages))
+ if (pathName === "/[order]/[slug]") {
+  console.log(true);
+  const fetchedImages = await getTopicsPhotos({orderBy, slug})
+  dispatch(addImage(fetchedImages))
+ } else 
+      {
+        const fetchedImages = await getImages({orderBy})
+        dispatch(addImage(fetchedImages))
+      }
+      // const test = await getTopics();
     };
 
     fetchImages();
-  }, [dispatch, orderBy]);
+  }, [dispatch, pathName,orderBy]);
 
   return (
     <Container sx={{ py: 4 }}>

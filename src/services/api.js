@@ -35,10 +35,30 @@ export const getTopics = async () => {
         Authorization: `Client-ID ${Authorization}`,
       },
     });
-    console.log(response.data)
+    // console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("Помилка", error);
     throw error;
   }
 };
+
+export const getTopicsPhotos =  async ({orderBy, slug}) => { 
+  try {  
+    const response = await axios.get(`https://api.unsplash.com/topics/${slug}/photos`, {
+      headers: {
+        Authorization: `Client-ID ${Authorization}`,
+      },params: {
+        per_page: 9,
+        order_by: orderBy,}
+    });
+    // console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Помилка", error);
+    throw error;
+  }
+};
+
+
+

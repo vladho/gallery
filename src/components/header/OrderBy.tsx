@@ -6,6 +6,9 @@ import { useRouter } from 'next/router';
 const OrderBy: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedOrder, setSelectedOrder] = useState<string>('popular');
+
+  const menuItemOptions = ["popular","oldest","views","latest","downloads"]
+  
   const open = Boolean(anchorEl);
   const router = useRouter();
 
@@ -23,10 +26,9 @@ const OrderBy: React.FC = () => {
     router.push(href); 
   };
 
-  const menuItemOptions = ["popular","oldest","views","latest","downloads"]
 
   return (
-    <Box >
+    <Box sx={{width:"85px"}}>
       <Button
         color="inherit"
         endIcon={<ArrowDropDownIcon />}

@@ -8,6 +8,7 @@ import { addImage } from '@/redux/gallery/galleryReducer';
 import {getImagesSelector} from "../../redux/gallery/gallerySelector"
 import { ImageItem } from './types';
 import   { useRouter } from 'next/router';
+import ModalComponent from '../modal/ModalComponent';
 
 
 type GalleryType = {orderBy: string};
@@ -34,19 +35,21 @@ const pathName = router.pathname;
       fetchImages();
     }, [dispatch, pathName,orderBy]);
     
-    const handleOpen = (photo) => {
+    const handleOpen = (photo: string) => {
       setSelectedPhoto(photo);
       setOpen(true);
     };
 
+    const handleClose = () => setOpen(false);
+    
   return (
     <Container sx={{ py: 4 }}>
       <Grid container spacing={4}>
         {getAllImages.map((image: ImageItem) => (
           <Grid item key={image.id} xs={12} sm={6} md={4}>
-            <Box onClick={()=>handleOpen(image)}>
+            {/* <Box onClick={()=>handleOpen()}> */}
             <ImageCard image={image} />
-            </Box>
+            {/* </Box> */}
           </Grid>
         ))}
       </Grid>

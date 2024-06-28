@@ -11,7 +11,7 @@ type Category = {
 };
 
 const CategoryTabs: React.FC = () => {
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(11);
   const [category, setCategory] = useState<Category[]>([]);
   const [orderBy,setOrderBy] = useState("");
   // const [categoryBy,setCategoryBy] = useState("")
@@ -27,7 +27,7 @@ const order = router.query.order;
 
 
   useEffect(() => {
-    setTabValue(0);
+    // setTabValue(0);
     const fetchCategory = async () => {
       try {
       const allCategory = await getTopics();

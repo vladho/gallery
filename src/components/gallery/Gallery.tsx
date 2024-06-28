@@ -8,6 +8,7 @@ import { getImagesSelector } from "../../redux/gallery/gallerySelector"
 import { ImageItem } from './types';
 import { useRouter } from 'next/router';
 import ModalComponent from '../modal/ModalComponent';
+import { useSearchParams } from 'next/navigation';
 
 type GalleryType = { orderBy: string };
 
@@ -19,6 +20,13 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
 
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+    const page = searchParams.get('page') ?? '1'
+  const per_page = searchParams.get('per_page') ?? '9'
+ 
+
   const pathName = router.pathname;
 
   const getAllImages = useSelector(getImagesSelector);
@@ -48,6 +56,7 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
   const handleClose = () => setOpen(false);
 
   const handlePageChange = (page: number) => {
+   
     if (page >= 1 && page <= totalPages) {
       fetchImages(page);
     }
@@ -89,7 +98,7 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
         ))}
       </Grid>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <ButtonGroup>
+        {/* <ButtonGroup>
           <Button 
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -103,7 +112,7 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
           >
             Вперед
           </Button>
-        </ButtonGroup>
+        </ButtonGroup> */}
       </Box>
       <ModalComponent open={open} handleClose={handleClose} photo={selectedPhoto} />
     </Container>

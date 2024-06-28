@@ -13,24 +13,25 @@ type Category = {
 const CategoryTabs: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [category, setCategory] = useState<Category[]>([]);
-  const [path,setPath] = useState("");
-  const [href,setHref] = useState("")
+  const [orderBy,setOrderBy] = useState("");
+  // const [categoryBy,setCategoryBy] = useState("")
 
 const dispatch = useDispatch();
 const router = useRouter();
 const pathName = router.pathname;
 const order = router.query.order;
 
+// console.log(category);
+// console.log(href);
+
+
+
   useEffect(() => {
     setTabValue(0);
     const fetchCategory = async () => {
       try {
-      console.log("object");
       const allCategory = await getTopics();
       setCategory(allCategory);
-      console.log(path,href);
-      const fetchedImages = await getTopicsPhotos(path, href)
-      dispatch(addImage(fetchedImages))
     }catch (err) { console.log(err); }}
 
     fetchCategory();
@@ -42,14 +43,15 @@ const order = router.query.order;
 
   const handleCategorySelect = async ( href: string) => {
       if (order) {
-        router.push(`${path}${href}`)
+        router.push(`${orderBy}${href}`)
 
       } else {
         router.push(`${pathName}${href}`);
-        setPath(pathName)
-        setHref(href)
+        setOrderBy(pathName)
+        // setCategoryBy(href)
       }
-      const fetchedImages = await getTopicsPhotos(path, href)
+      console.log("wtf api request");
+      const fetchedImages = await getTopicsPhotos(orderBy, href)
       dispatch(addImage(fetchedImages))
     
   }
@@ -88,7 +90,7 @@ const order = router.query.order;
   }} 
   
 >     
-<Tab key="all" label="All" onClick={()=>router.push(path)}/>
+<Tab key="all" label="All" onClick={()=>router.push(orderBy)}/>
   {category.map((el, index) => (
     <Tab key={index} label={el.slug} onClick={()=>handleCategorySelect(`/${el.slug}`)}/>
   ))}

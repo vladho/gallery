@@ -20,29 +20,15 @@ const Gallery: React.FC<GalleryType> = ({orderBy}) => {
   const dispatch = useDispatch();
 const router = useRouter();
 const pathName = router.pathname;
-console.log(pathName);
-console.log(router);
-
-const slug = router.query.slug
 
   const getAllImages = useSelector(getImagesSelector);
-  // console.log(getAllImages)
-  // console.log(router.query.slug);
-
 
   useEffect(() => {
     const fetchImages = async () => {
-//  if (pathName === "/[order]/[slug]") {
-//   console.log(true);
-//   const fetchedImages = await getTopicsPhotos({orderBy, slug})
-//   dispatch(addImage(fetchedImages))
-//  } else 
-//       {
+
         const fetchedImages = await getImages({orderBy})
         dispatch(addImage(fetchedImages))
       }
-      // const test = await getTopics();
-    // };
 
     fetchImages();
   }, [dispatch, pathName,orderBy]);

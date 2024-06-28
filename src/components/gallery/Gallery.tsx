@@ -12,7 +12,8 @@ import { useSearchParams } from 'next/navigation';
 
 type GalleryType = { orderBy: string };
 
-const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
+const Gallery: React.FC<GalleryType> = ( {photos} ) => {
+  console.log(photos);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,10 +33,9 @@ const Gallery: React.FC<GalleryType> = ({ orderBy }) => {
   const getAllImages = useSelector(getImagesSelector);
 
   useEffect(() => {
-
     setCurrentPage(1);
     fetchImages(1);
-  }, [dispatch, pathName, orderBy]);
+  }, [dispatch, pathName]);
 
   const fetchImages = async (page: number) => {
     try {

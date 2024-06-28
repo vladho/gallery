@@ -1,4 +1,3 @@
-// Gallery.tsx
 import React, { useEffect, useState } from 'react';
 import { Box, Container, Grid } from '@mui/material';
 import { getTopics, getImages, getTopicsPhotos } from '../../services/api';

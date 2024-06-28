@@ -24,14 +24,17 @@ const order = router.query.order;
   useEffect(() => {
     setTabValue(0);
     const fetchCategory = async () => {
+      try {
+      console.log("object");
       const allCategory = await getTopics();
       setCategory(allCategory);
-      const fetchedImages = getTopicsPhotos({path, href})
+      console.log(path,href);
+      const fetchedImages = await getTopicsPhotos({path, href})
       dispatch(addImage(fetchedImages))
-    };
+    }catch (err) { console.log(err); }}
 
     fetchCategory();
-  }, []);
+  }, [dispatch]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -44,6 +47,7 @@ const order = router.query.order;
       } else {
         router.push(`${pathName}${href}`);
         setPath(pathName)
+        setHref(href)
       }
     
   }

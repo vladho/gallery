@@ -14,7 +14,7 @@ type GalleryType = { orderBy: string };
 
 const Gallery: React.FC<GalleryType> = (params) => {
   console.log(params);
-  const { orderBy,slug } = params;
+  const { orderBy } = params;
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

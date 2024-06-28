@@ -12,15 +12,15 @@ const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
   const getRandomComments = () => Math.floor(Math.random() * 100);
 
   return (
-    <Box>
-      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%'}}>
+    <Box >
+      <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%'  }}>
         <CardMedia
           component="img"
-          sx={{ height: 200, objectFit: 'cover' }}
+          sx={{ height: 360, objectFit: 'cover' }}
           image={image.urls.regular}
           alt={image.alt_description}
         />
-        <CardContent sx={{ flexGrow: 1, p: 0 }}>
+        <CardContent sx={{  p: 0, '&:last-child': { pb: 0 }  }}>
           <ImageStats 
             views={getRandomViews()} 
             comments={getRandomComments()} 

@@ -12,7 +12,7 @@ interface ImageStatsProps {
 
 const ImageStats: React.FC<ImageStatsProps> = ({ views, comments, likes }) => {
   return (
-<Box sx={{ display: 'flex', justifyContent: 'end', fontSize: '0.8rem', mt:1 }}>
+<Box sx={{ display: 'flex', justifyContent: 'end', fontSize: '0.8rem', mt:2, mb:2, mr:1.5 }}>
   {[
     { id: 1, icon: <VisibilityIcon fontSize="inherit" />, value: views},
     { id: 2, icon: <CommentIcon fontSize="inherit" />, value: comments},

@@ -28,7 +28,7 @@ const OrderBy: React.FC = () => {
 
 
   return (
-    <Box sx={{width:"85px"}}>
+    <Box sx={{width:"105px"}}>
       <Button
         color="inherit"
         endIcon={<ArrowDropDownIcon />}

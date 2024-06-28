@@ -88,7 +88,7 @@ const order = router.query.order;
   }} 
   
 >     
-<Tab key="all" label="All" />
+<Tab key="all" label="All" onClick={()=>router.push(path)}/>
   {category.map((el, index) => (
     <Tab key={index} label={el.slug} onClick={()=>handleCategorySelect(`/${el.slug}`)}/>
   ))}

@@ -3,6 +3,7 @@ import axios from "axios";
 const Authorization = "j_knc_osII1b4Vten-5gcRoQrwAYBXbrkLaadAh9fzY"
 const baseUrl = "https://api.unsplash.com/photos/";
 const topicsUrl = 'https://api.unsplash.com/topics';
+const searchUrl = 'https://api.unsplash.com/search/photos' ;
 
 
 
@@ -59,6 +60,26 @@ export const getTopicsPhotos =  async (orderBy, slug) => {
     throw error;
   }
 };
+
+export const getSearchPhotos =  async (value) => { 
+
+  try {  
+    const response = await axios.get(searchUrl, {
+      headers: {
+        Authorization: `Client-ID ${Authorization}`,
+      },params: {
+        query:value,
+        }
+    });
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Помилка", error);
+    throw error;
+  }
+};
+
+
 
 
 

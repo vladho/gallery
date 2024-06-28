@@ -27,6 +27,7 @@ const pathName = router.pathname;
     const fetchImages = async () => {
 
         const fetchedImages = await getImages({orderBy})
+        console.log(fetchedImages);
         dispatch(addImage(fetchedImages))
       }
 

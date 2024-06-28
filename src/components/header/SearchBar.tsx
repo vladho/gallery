@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
 import { Box, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useDispatch, useSelector } from 'react-redux';
+import { addImage, searchImages } from '@/redux/gallery/galleryReducer';
+import { getSearchPhotos } from '@/services/api';
+
+interface RootState {
+  gallery: {
+    filter: string; 
+  };
+}
 
 const SearchBar: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+ 
+  const dispatch = useDispatch();
+  const [search, setSearch] = useState("")
+  // const search = useSelector((state: RootState) => state.gallery.filter);
+
 
   const handleSearch = () => {
-    console.log('Пошук за запитом:', searchQuery);
+    console.log('Пошук за запитом:', search);
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.currentTarget.value);
+  const handleSearchChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const images = await getSearchPhotos(event.currentTarget.value)
+    console.log(event.currentTarget.value);
+    setSearch(event.currentTarget.value)
+    console.log(images);
+    // dispatch(addImage(images));
+
   };
 
   return (
@@ -25,7 +43,7 @@ const SearchBar: React.FC = () => {
         sx={{ ml: 1, flex: 1 }}
         placeholder="Пошук"
         inputProps={{ 'aria-label': 'search parameters' }}
-        value={searchQuery}
+        value={search}
         onChange={handleSearchChange}
       />
       <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>

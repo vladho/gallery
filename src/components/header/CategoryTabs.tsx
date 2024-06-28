@@ -48,9 +48,9 @@ const order = router.query.order;
       } else {
         router.push(`${pathName}${href}`);
         setOrderBy(pathName)
-        // setCategoryBy(href)
+
       }
-      console.log("wtf api request");
+    
       const fetchedImages = await getTopicsPhotos(orderBy, href)
       dispatch(addImage(fetchedImages))
     

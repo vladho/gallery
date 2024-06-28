@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const Authorization = "j_knc_osII1b4Vten-5gcRoQrwAYBXbrkLaadAh9fzY"
+const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
+
+const authorization = "j_knc_osII1b4Vten-5gcRoQrwAYBXbrkLaadAh9fzY"
 const baseUrl = "https://api.unsplash.com/photos/";
 const topicsUrl = 'https://api.unsplash.com/topics';
 const searchUrl = 'https://api.unsplash.com/search/photos' ;
@@ -8,9 +10,10 @@ const searchUrl = 'https://api.unsplash.com/search/photos' ;
 
 
 export const getImages = async ({orderBy}) => {
+
   const baseAuthorization = {
     headers: {
-    Authorization: `Client-ID ${Authorization}`
+    Authorization: `Client-ID ${authorization}`
   }, params: {
     per_page: 9,
     order_by: orderBy,
@@ -32,7 +35,7 @@ export const getTopics = async () => {
   try {
     const response = await axios.get(topicsUrl, {
       headers: {
-        Authorization: `Client-ID ${Authorization}`,
+        Authorization: `Client-ID ${authorization}`,
       },
     });
     // console.log(response.data)
@@ -47,7 +50,7 @@ export const getTopicsPhotos =  async (orderBy, slug) => {
   try {  
     const response = await axios.get(`https://api.unsplash.com/topics/${slug}/photos`, {
       headers: {
-        Authorization: `Client-ID ${Authorization}`,
+        Authorization: `Client-ID ${authorization}`,
       },params: {
         per_page: 9,
         order_by: orderBy,}
@@ -65,7 +68,7 @@ export const getSearchPhotos =  async (value) => {
   try {  
     const response = await axios.get(searchUrl, {
       headers: {
-        Authorization: `Client-ID ${Authorization}`,
+        Authorization: `Client-ID ${authorization}`,
       },params: {
         query:value,
         }

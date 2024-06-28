@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Modal, Button, Typography } from '@mui/material';
 
 const style = {
@@ -6,33 +6,33 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: '80%',
+  maxWidth: '600px',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
 
-const ModalComponent = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+type ModalComponentProps ={
+  open: boolean;
+  handleClose: () => void;
+  photo: string | null;
+}
 
+const ModalComponent:React.FC<ModalComponentProps> = ({ open, handleClose, photo }) => {
   return (
-    <div>
-      <Button onClick={handleOpen} variant="contained">Відкрити Модалку</Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
-        <Box sx={style}>
-
-          <Button onClick={handleClose} variant="contained" sx={{ mt: 2 }}>Закрити</Button>
-        </Box>
-      </Modal>
-    </div>
+    <Modal
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+    >
+      <Box sx={style}>
+        <img src={photo} alt="Enlarged" style={{ width: '100%', height: 'auto' }} />
+        <Button onClick={handleClose} variant="contained" sx={{ mt: 2 }}>Закрити</Button>
+      </Box>
+    </Modal>
   );
 };
 

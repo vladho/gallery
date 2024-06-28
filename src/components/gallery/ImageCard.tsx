@@ -10,6 +10,7 @@ interface ImageCardProps {
 const ImageCard: React.FC<ImageCardProps> = ({ image }) => {
   const getRandomViews = () => Math.floor(Math.random() * 2500);
   const getRandomComments = () => Math.floor(Math.random() * 100);
+  console.log(image);
 
   return (
     <Box >

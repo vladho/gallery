@@ -11,7 +11,7 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  // p: 4,
 };
 
 type ModalComponentProps ={
@@ -21,6 +21,8 @@ type ModalComponentProps ={
 }
 
 const ModalComponent:React.FC<ModalComponentProps> = ({ open, handleClose, photo }) => {
+  if (!open || !photo) return null;
+
   return (
     <Modal
       open={open}
@@ -30,10 +32,8 @@ const ModalComponent:React.FC<ModalComponentProps> = ({ open, handleClose, photo
     >
       <Box sx={style}>
         <img src={photo} alt="Enlarged" style={{ width: '100%', height: 'auto' }} />
-        <Button onClick={handleClose} variant="contained" sx={{ mt: 2 }}>Закрити</Button>
       </Box>
     </Modal>
   );
 };
-
 export default ModalComponent;

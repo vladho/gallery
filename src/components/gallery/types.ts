@@ -3,6 +3,7 @@ export interface ImageItem {
     alt_description
 : string;
     urls:{ 
+        full:string
     regular: string;}
     views: number;
     comments: number;

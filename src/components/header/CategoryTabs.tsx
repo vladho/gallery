@@ -29,7 +29,7 @@ const order = router.query.order;
       const allCategory = await getTopics();
       setCategory(allCategory);
       console.log(path,href);
-      const fetchedImages = await getTopicsPhotos({path, href})
+      const fetchedImages = await getTopicsPhotos(path, href)
       dispatch(addImage(fetchedImages))
     }catch (err) { console.log(err); }}
 
@@ -40,7 +40,7 @@ const order = router.query.order;
     setTabValue(newValue);
   };
 
-  const handleCategorySelect = ( href: string) => {
+  const handleCategorySelect = async ( href: string) => {
       if (order) {
         router.push(`${path}${href}`)
 
@@ -49,6 +49,8 @@ const order = router.query.order;
         setPath(pathName)
         setHref(href)
       }
+      const fetchedImages = await getTopicsPhotos(path, href)
+      dispatch(addImage(fetchedImages))
     
   }
   

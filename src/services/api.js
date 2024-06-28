@@ -43,7 +43,7 @@ export const getTopics = async () => {
   }
 };
 
-export const getTopicsPhotos =  async ({orderBy, slug}) => { 
+export const getTopicsPhotos =  async (orderBy, slug) => { 
   try {  
     const response = await axios.get(`https://api.unsplash.com/topics/${slug}/photos`, {
       headers: {

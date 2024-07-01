@@ -36,12 +36,13 @@ const Gallery: React.FC= () => {
   useEffect(() => {
     dispatch(setCurrentPage(page))
     fetchImages(currentPage);
-  }, [dispatch, order, slug,searchPage]);
+  }, [dispatch, order, slug, searchPage]);
 
   const fetchImages = async (page: number) => {
+    console.log("object");
     try {
       if (searchPage) {
-        const fetchedData = await getSearchPhotos(searchResult,currentPage);
+        const fetchedData = await getSearchPhotos(searchResult,page);
         dispatch(addImage(fetchedData.images));
         setTotalPages(fetchedData.totalPages);
       } else
@@ -71,6 +72,10 @@ const Gallery: React.FC= () => {
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       fetchImages(page);
+      router.push({
+        pathname: router.pathname,
+        query: { ...router.query, page }
+    });
     }
   };
 

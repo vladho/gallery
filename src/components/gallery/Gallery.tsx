@@ -14,9 +14,8 @@ import Pagination from './Pagination';
 const Gallery: React.FC= () => {
 
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
-  // const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [open, setOpen] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -26,35 +25,37 @@ const Gallery: React.FC= () => {
   const searchParams = useSearchParams();
   
   const searchPage = router.query.search
-  const order = router.query.order
-  const slug = router.query.slug
+  const order = router?.query?.order ?? "popular"
+  const slug = router?.query?.slug
+
 
   const page = parseInt(searchParams.get('page') || '1', 10);
   const searchResult = searchParams.get('search')
 
-
   useEffect(() => {
-    dispatch(setCurrentPage(page))
-    fetchImages(currentPage);
-  }, [dispatch, order, slug, searchPage]);
+    // dispatch(setCurrentPage(page))
+    if (router.isReady) {
+      console.log(order);
+      fetchImages(page);
+    }
+
+  }, [router.isReady, order, slug, searchPage]);
 
   const fetchImages = async (page: number) => {
-    console.log("object");
     try {
+      
+      let fetchedData;
       if (searchPage) {
-        const fetchedData = await getSearchPhotos(searchResult,page);
-        dispatch(addImage(fetchedData.images));
-        setTotalPages(fetchedData.totalPages);
+        
+        fetchedData = await getSearchPhotos(searchResult,page);
       } else
       if(slug) {
-        const fetchedData = await getTopicsPhotos(order, slug,page)
-        dispatch(addImage(fetchedData.images));
-        setTotalPages(fetchedData.totalPages);
+        fetchedData = await getTopicsPhotos(order, slug,page)
       } else {
-        const fetchedData = await getImages(order, page);
-        dispatch(addImage(fetchedData.images));
-        setTotalPages(fetchedData.totalPages);
+        fetchedData = await getImages(order, page);
       }
+      dispatch(addImage(fetchedData.images));
+      setTotalPages(fetchedData.totalPages);
       dispatch(setCurrentPage(page))
     
     } catch (error) {
@@ -70,7 +71,10 @@ const Gallery: React.FC= () => {
   const handleClose = () => setOpen(false);
 
   const handlePageChange = (page: number) => {
+    console.log(page);
     if (page >= 1 && page <= totalPages) {
+    console.log(page);
+
       fetchImages(page);
       router.push({
         pathname: router.pathname,

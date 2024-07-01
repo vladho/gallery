@@ -9,7 +9,7 @@ const NotFound = () => {
 
   useEffect(() => {
     const redirectTimer = setTimeout(() => {
-      router.push("/popular");
+      router.push("/");
     }, 5000);
     return () => clearTimeout(redirectTimer);
   }, []);

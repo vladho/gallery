@@ -9,7 +9,7 @@ const searchUrl = 'https://api.unsplash.com/search/photos' ;
 
 
 
-export const getImages = async ({ orderBy, page = 1 }) => {
+export const getImages = async ( orderBy, page = 1 ) => {
   const baseAuthorization = {
     headers: {
       Authorization: `Client-ID ${authorization}`
@@ -53,6 +53,8 @@ export const getTopics = async () => {
 };
 
 export const getTopicsPhotos =  async (orderBy, slug) => { 
+  console.log("test", orderBy, slug);
+  // console.log(orderBy,slug);
   try {  
     const response = await axios.get(`https://api.unsplash.com/topics/${slug}/photos`, {
       headers: {

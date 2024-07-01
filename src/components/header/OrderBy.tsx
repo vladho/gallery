@@ -23,7 +23,7 @@ const OrderBy: React.FC = () => {
   const handleOrderSelect = (order: string, href: string) => {
     setSelectedOrder(order);
     handleClose();
-    router.push(href); 
+    router.push({pathname: `${href}`})
   };
 
 

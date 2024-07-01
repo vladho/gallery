@@ -23,6 +23,7 @@ export const getImages = async ( orderBy, page = 1 ) => {
   
   try {
     const response = await axios.get(baseUrl, baseAuthorization);
+    console.log(response.data);
     const totalPages = parseInt(response.headers['x-total']) || 1;
     
     return {
@@ -52,19 +53,25 @@ export const getTopics = async () => {
   }
 };
 
-export const getTopicsPhotos =  async (orderBy, slug) => { 
-  console.log("test", orderBy, slug);
-  // console.log(orderBy,slug);
+export const getTopicsPhotos =  async (orderBy, slug,page) => { 
+
   try {  
     const response = await axios.get(`https://api.unsplash.com/topics/${slug}/photos`, {
       headers: {
         Authorization: `Client-ID ${authorization}`,
       },params: {
+        page:page,
         per_page: 9,
         order_by: orderBy,}
     });
     // console.log(response.data)
-    return response.data;
+    // return response.data;
+    const totalPages = parseInt(response.headers['x-total']) || 1;
+    
+    return {
+      images: response.data,
+      totalPages: Math.ceil(totalPages / 9)
+    };
   } catch (error) {
     console.error("Помилка", error);
     throw error;

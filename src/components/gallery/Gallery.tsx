@@ -1,60 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Grid, Button, ButtonGroup } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { addImage, setCurrentPage } from '@/redux/gallery/galleryReducer';
 import { getImages, getTopicsPhotos } from '../../services/api';
 import ImageCard from './ImageCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { addImage } from '@/redux/gallery/galleryReducer';
-import { getImagesSelector } from "../../redux/gallery/gallerySelector"
+import { getCurrentPageSelector, getImagesSelector } from "../../redux/gallery/gallerySelector"
 import { ImageItem } from './types';
 import { useRouter } from 'next/router';
 import ModalComponent from '../modal/ModalComponent';
 import { useSearchParams } from 'next/navigation';
-
-
+import Pagination from './Pagination';
 
 const Gallery: React.FC= () => {
 
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const currentPage = useSelector(getCurrentPageSelector);
+  const getAllImages = useSelector(getImagesSelector);
 
   const searchParams = useSearchParams();
-
-    const page = searchParams.get('page') ?? '1'
-  const per_page = searchParams.get('per_page') ?? '9'
- 
-
-  const route = router.query;
-  console.log(route);
+  
   const order = router.query.order
   const slug = router.query.slug
 
-  const getAllImages = useSelector(getImagesSelector);
+  const page = parseInt(searchParams.get('page') || '1', 10); 
+  console.log(page);
 
   useEffect(() => {
-    setCurrentPage(1);
+    dispatch(setCurrentPage(page))
     fetchImages(currentPage);
-  }, [dispatch,  order,slug]);
+  }, [dispatch, order, slug]);
 
   const fetchImages = async (page: number) => {
     try {
       if(slug) {
-        const fetchedImages = await getTopicsPhotos(order, slug)
-        dispatch(addImage(fetchedImages))
-
+        const fetchedData = await getTopicsPhotos(order, slug,page)
+        dispatch(addImage(fetchedData.images));
+        setTotalPages(fetchedData.totalPages);
       } else {
-
-      const fetchedData = await getImages( order, page );
-      dispatch(addImage(fetchedData.images));
-      setTotalPages(fetchedData.totalPages);
-
-    }
-
-      setCurrentPage(page);
+        console.log(order);
+        const fetchedData = await getImages(order, page);
+        dispatch(addImage(fetchedData.images));
+        setTotalPages(fetchedData.totalPages);
+      }
+      dispatch(setCurrentPage(page))
+    
     } catch (error) {
       console.error("Помилка завантаження зображень", error);
     }
@@ -68,34 +63,9 @@ const Gallery: React.FC= () => {
   const handleClose = () => setOpen(false);
 
   const handlePageChange = (page: number) => {
-   
     if (page >= 1 && page <= totalPages) {
       fetchImages(page);
     }
-  };
-
-  const renderPaginationButtons = () => {
-    let buttons = [];
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, startPage + 4);
-
-    if (endPage - startPage < 4) {
-      startPage = Math.max(1, endPage - 4);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(
-        <Button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          variant={i === currentPage ? "contained" : "outlined"}
-        >
-          {i}
-        </Button>
-      );
-    }
-
-    return buttons;
   };
 
   return (
@@ -110,21 +80,11 @@ const Gallery: React.FC= () => {
         ))}
       </Grid>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        {/* <ButtonGroup>
-          <Button 
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Назад
-          </Button>
-          {renderPaginationButtons()}
-          <Button 
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Вперед
-          </Button>
-        </ButtonGroup> */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </Box>
       <ModalComponent open={open} handleClose={handleClose} photo={selectedPhoto} />
     </Container>

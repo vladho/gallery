@@ -9,7 +9,7 @@ const searchUrl = 'https://api.unsplash.com/search/photos' ;
 
 
 
-export const getImages = async ({ orderBy, page = 1 }) => {
+export const getImages = async ( orderBy, page = 1 ) => {
   const baseAuthorization = {
     headers: {
       Authorization: `Client-ID ${authorization}`

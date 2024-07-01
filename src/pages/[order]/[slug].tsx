@@ -1,23 +1,10 @@
 import React from "react";
 import Gallery from "@/components/gallery/Gallery";
 
-export default function categoryPhotos({ params = {} }: { params?: { orderBy?: string, slug?: string } }) {
-  console.log(params);
-  
-  const { orderBy = "popular", slug = "" } = params;
-
+export default function categoryPhotos() {
   return (
       <>
-          <Gallery params={{ orderBy, slug }} />
+          <Gallery  />
       </>
   );
 }
-
-// export async function getServerSideProps({params} ) {
-
-//     return {
-//       props: {
-//         params,
-//       },
-//     };
-//   }

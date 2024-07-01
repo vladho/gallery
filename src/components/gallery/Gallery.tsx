@@ -10,12 +10,10 @@ import { useRouter } from 'next/router';
 import ModalComponent from '../modal/ModalComponent';
 import { useSearchParams } from 'next/navigation';
 
-type GalleryType = { params:{orderBy: string, slug:string} };
 
-const Gallery: React.FC<GalleryType> = ({params}) => {
 
-  // console.log(params);
-  const {orderBy , slug } = params;
+const Gallery: React.FC= () => {
+
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,26 +28,27 @@ const Gallery: React.FC<GalleryType> = ({params}) => {
   const per_page = searchParams.get('per_page') ?? '9'
  
 
-  const pathName = router.pathname;
+  const route = router.query;
+  console.log(route);
+  const order = router.query.order
+  const slug = router.query.slug
 
   const getAllImages = useSelector(getImagesSelector);
 
   useEffect(() => {
     setCurrentPage(1);
-    fetchImages(1);
-  }, [dispatch, pathName, orderBy,slug]);
+    fetchImages(currentPage);
+  }, [dispatch,  order,slug]);
 
   const fetchImages = async (page: number) => {
     try {
-
       if(slug) {
-        
-        const fetchedImages = await getTopicsPhotos(orderBy, slug)
+        const fetchedImages = await getTopicsPhotos(order, slug)
         dispatch(addImage(fetchedImages))
 
       } else {
 
-      const fetchedData = await getImages({ orderBy, page });
+      const fetchedData = await getImages( order, page );
       dispatch(addImage(fetchedData.images));
       setTotalPages(fetchedData.totalPages);
 

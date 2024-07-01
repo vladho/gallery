@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Container, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { addImage, setCurrentPage } from '@/redux/gallery/galleryReducer';
-import { getImages, getTopicsPhotos } from '../../services/api';
+import { getImages, getSearchPhotos, getTopicsPhotos } from '../../services/api';
 import ImageCard from './ImageCard';
 import { getCurrentPageSelector, getImagesSelector } from "../../redux/gallery/gallerySelector"
 import { ImageItem } from './types';
@@ -25,25 +25,31 @@ const Gallery: React.FC= () => {
 
   const searchParams = useSearchParams();
   
+  const searchPage = router.query.search
   const order = router.query.order
   const slug = router.query.slug
 
-  const page = parseInt(searchParams.get('page') || '1', 10); 
-  console.log(page);
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const searchResult = searchParams.get('search')
+
 
   useEffect(() => {
     dispatch(setCurrentPage(page))
     fetchImages(currentPage);
-  }, [dispatch, order, slug]);
+  }, [dispatch, order, slug,searchPage]);
 
   const fetchImages = async (page: number) => {
     try {
+      if (searchPage) {
+        const fetchedData = await getSearchPhotos(searchResult,currentPage);
+        dispatch(addImage(fetchedData.images));
+        setTotalPages(fetchedData.totalPages);
+      } else
       if(slug) {
         const fetchedData = await getTopicsPhotos(order, slug,page)
         dispatch(addImage(fetchedData.images));
         setTotalPages(fetchedData.totalPages);
       } else {
-        console.log(order);
         const fetchedData = await getImages(order, page);
         dispatch(addImage(fetchedData.images));
         setTotalPages(fetchedData.totalPages);

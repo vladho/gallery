@@ -64,8 +64,7 @@ export const getTopicsPhotos =  async (orderBy, slug,page) => {
         per_page: 9,
         order_by: orderBy,}
     });
-    // console.log(response.data)
-    // return response.data;
+
     const totalPages = parseInt(response.headers['x-total']) || 1;
     
     return {
@@ -78,18 +77,23 @@ export const getTopicsPhotos =  async (orderBy, slug,page) => {
   }
 };
 
-export const getSearchPhotos =  async (value) => { 
-
+export const getSearchPhotos =  async (value,page) => { 
   try {  
     const response = await axios.get(searchUrl, {
       headers: {
         Authorization: `Client-ID ${authorization}`,
       },params: {
         query:value,
+        page:page,
+        per_page: 9,
         }
     });
+    const totalPages = parseInt(response.headers['x-total']) || 1;
 
-    return response.data.results;
+    return {
+      images: response.data.results,
+      totalPages: Math.ceil(totalPages / 9)
+    };
   } catch (error) {
     console.error("Помилка", error);
     throw error;

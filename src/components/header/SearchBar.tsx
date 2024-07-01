@@ -2,33 +2,29 @@ import React, { useState } from 'react';
 import { Box, InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch, useSelector } from 'react-redux';
-import { addImage, searchImages } from '@/redux/gallery/galleryReducer';
+import { addImage } from '@/redux/gallery/galleryReducer';
 import { getSearchPhotos } from '@/services/api';
+import { getCurrentPageSelector } from '@/redux/gallery/gallerySelector';
+import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 
-interface RootState {
-  gallery: {
-    filter: string; 
-  };
-}
 
 const SearchBar: React.FC = () => {
  
-  const dispatch = useDispatch();
-  const [search, setSearch] = useState("")
-  
+  const [search, setSearch] = useState<string | null>("")
 
-  const handleSearch = async () => {
-        try {
-      const images = await getSearchPhotos(search);
-      dispatch(addImage(images));
-    } catch (error) {
-      console.error("Помилка при отриманні зображень:", error);
-    }
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const  currentPage = useSelector(getCurrentPageSelector)
+
+// const searchUrl = searchParams.get('search') ;
+
+const handleSearch = async () => {
+  router.push({pathname: `/searchPage`, query: { search, page: currentPage}})
   };
 
   const handleSearchChange =  (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.currentTarget.value;
-       
     setSearch(searchValue);
     
   };

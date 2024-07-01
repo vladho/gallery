@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Box } from '@mui/material';
-import { getTopics, getTopicsPhotos } from '@/services/api';
+import { getTopics } from '@/services/api';
 import { useRouter } from 'next/router';
-import { addImage } from '@/redux/gallery/galleryReducer';
+
 import { useDispatch } from 'react-redux';
 
 
@@ -18,12 +18,7 @@ const CategoryTabs: React.FC = () => {
 
 const dispatch = useDispatch();
 const router = useRouter();
-const pathName = router.pathname;
 const order = router.query.order;
-
-// console.log(category);
-// console.log(href);
-
 
 
   useEffect(() => {
@@ -37,23 +32,13 @@ const order = router.query.order;
     fetchCategory();
   }, [dispatch]);
 
+
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
   const handleCategorySelect = async ( href: string) => {
-      if (order) {
-        router.push(`${orderBy}${href}`)
-
-      } else {
-        router.push(`${pathName}${href}`);
-        setOrderBy(pathName)
-
-      }
-    
-      const fetchedImages = await getTopicsPhotos(orderBy, href)
-      dispatch(addImage(fetchedImages))
-    
+        router.push({pathname: `/${order}/${href}`})
   }
   
   return (
@@ -90,9 +75,9 @@ const order = router.query.order;
   }} 
   
 >     
-<Tab key="all" label="All" onClick={()=>router.push(orderBy)}/>
+<Tab key="all" label="All" onClick={()=>router.push({pathname: `/${order}`})}/>
   {category.map((el, index) => (
-    <Tab key={index} label={el.slug} onClick={()=>handleCategorySelect(`/${el.slug}`)}/>
+    <Tab key={index} label={el.slug} onClick={()=>handleCategorySelect(`${el.slug}`)}/>
   ))}
 </Tabs>
 </Box>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Container, Grid, Button, ButtonGroup } from '@mui/material';
-import { getImages } from '../../services/api';
+import { getImages, getTopicsPhotos } from '../../services/api';
 import ImageCard from './ImageCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { addImage } from '@/redux/gallery/galleryReducer';
@@ -10,11 +10,12 @@ import { useRouter } from 'next/router';
 import ModalComponent from '../modal/ModalComponent';
 import { useSearchParams } from 'next/navigation';
 
-type GalleryType = { orderBy: string };
+type GalleryType = { params:{orderBy: string, slug:string} };
 
-const Gallery: React.FC<GalleryType> = (params) => {
-  console.log(params);
-  const { orderBy } = params;
+const Gallery: React.FC<GalleryType> = ({params}) => {
+
+  // console.log(params);
+  const {orderBy , slug } = params;
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,13 +37,24 @@ const Gallery: React.FC<GalleryType> = (params) => {
   useEffect(() => {
     setCurrentPage(1);
     fetchImages(1);
-  }, [dispatch, pathName, orderBy]);
+  }, [dispatch, pathName, orderBy,slug]);
 
   const fetchImages = async (page: number) => {
     try {
+
+      if(slug) {
+        
+        const fetchedImages = await getTopicsPhotos(orderBy, slug)
+        dispatch(addImage(fetchedImages))
+
+      } else {
+
       const fetchedData = await getImages({ orderBy, page });
       dispatch(addImage(fetchedData.images));
       setTotalPages(fetchedData.totalPages);
+
+    }
+
       setCurrentPage(page);
     } catch (error) {
       console.error("Помилка завантаження зображень", error);

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentPageSelector } from '@/redux/gallery/gallerySelector';
+import { setCurrentPage } from '@/redux/gallery/galleryReducer';
 
 
 type Category = {
@@ -18,11 +19,10 @@ const CategoryTabs: React.FC = () => {
   // const [categoryBy,setCategoryBy] = useState("")
 
 const dispatch = useDispatch();
+const router = useRouter();
 const  currentPage = useSelector(getCurrentPageSelector)
 
-const router = useRouter();
-const order = router.query.order;
-
+const order = router.query.order ?? "popular";
 
   useEffect(() => {
     setTabValue(0);
@@ -41,8 +41,10 @@ const order = router.query.order;
   };
 
   const handleCategorySelect = async ( href: string) => {
-        router.push({pathname: `/${order}/${href}`, query: { page: currentPage}})
-  }
+        router.push({pathname: `/${order}/${href}`, query: { page: 1}})
+        dispatch(setCurrentPage(1))
+  
+      }
   
   return (
     <Box sx={{ overflowX: 'auto', width: '100%' }}>

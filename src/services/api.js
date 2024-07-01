@@ -10,6 +10,7 @@ const searchUrl = 'https://api.unsplash.com/search/photos' ;
 
 
 export const getImages = async ( orderBy, page = 1 ) => {
+ 
   const baseAuthorization = {
     headers: {
       Authorization: `Client-ID ${authorization}`
@@ -23,7 +24,6 @@ export const getImages = async ( orderBy, page = 1 ) => {
   
   try {
     const response = await axios.get(baseUrl, baseAuthorization);
-
     const totalPages = parseInt(response.headers['x-total']) || 1;
     
     return {
@@ -78,6 +78,7 @@ export const getTopicsPhotos =  async (orderBy, slug,page) => {
 };
 
 export const getSearchPhotos =  async (value,page) => { 
+  console.log(value);
   try {  
     const response = await axios.get(searchUrl, {
       headers: {
@@ -89,7 +90,7 @@ export const getSearchPhotos =  async (value,page) => {
         }
     });
     const totalPages = parseInt(response.headers['x-total']) || 1;
-
+console.log(response);
     return {
       images: response.data.results,
       totalPages: Math.ceil(totalPages / 9)

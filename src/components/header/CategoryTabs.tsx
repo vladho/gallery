@@ -3,7 +3,8 @@ import { Tabs, Tab, Box } from '@mui/material';
 import { getTopics } from '@/services/api';
 import { useRouter } from 'next/router';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentPageSelector } from '@/redux/gallery/gallerySelector';
 
 
 type Category = {
@@ -17,6 +18,8 @@ const CategoryTabs: React.FC = () => {
   // const [categoryBy,setCategoryBy] = useState("")
 
 const dispatch = useDispatch();
+const  currentPage = useSelector(getCurrentPageSelector)
+
 const router = useRouter();
 const order = router.query.order;
 
@@ -38,7 +41,7 @@ const order = router.query.order;
   };
 
   const handleCategorySelect = async ( href: string) => {
-        router.push({pathname: `/${order}/${href}`})
+        router.push({pathname: `/${order}/${href}`, query: { page: currentPage}})
   }
   
   return (

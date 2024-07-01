@@ -5,7 +5,6 @@ export const images = createSlice({
   initialState: [],
   reducers: {
     addImage: (state, { payload }) => {
-      console.log(payload);
       return [...payload];
     },
   },
@@ -15,8 +14,8 @@ export const filter = createSlice({
   name: "filter",
   initialState: "",
   reducers: {
-    searchImages: (state, action) => {
-      return state.currentPage = action.payload;
+    searchImages: (_, action) => {
+      return action.payload;
     },
   },
 });
@@ -26,8 +25,6 @@ export const currentPage = createSlice({
   initialState:  1,
   reducers: {
     setCurrentPage: (state, action) => {
-      console.log(state.currentPage);
-      console.log(action.payload);
       return state = action.payload;
     },
   },
